@@ -3,12 +3,12 @@ package org.example;
 import java.io.*;
 import java.net.*;
 
-public class ServerThread extends Thread {
+public class ServerClientConnectionThread extends Thread {
 
   private Socket socket;
   private int clientNum;
 
-  public ServerThread(Socket socket, int clientNum) {
+  public ServerClientConnectionThread(Socket socket, int clientNum) {
     this.socket = socket;
     this.clientNum = clientNum;
   }

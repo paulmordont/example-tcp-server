@@ -5,13 +5,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
-public class ServerConnectionThread extends Thread {
+public class ServerAcceptConnectionThread extends Thread {
 
   private ServerSocket serverSocket;
 
   private int clientNum;
 
-  public ServerConnectionThread(ServerSocket serverSocket) {
+  public ServerAcceptConnectionThread(ServerSocket serverSocket) {
     this.serverSocket = serverSocket;
     this.clientNum = 0;
   }
@@ -29,7 +29,7 @@ public class ServerConnectionThread extends Thread {
 
       System.out.println(String.format("Client %s connected", clientNum));
 
-      new ServerThread(socket, clientNum).start();
+      new ServerClientConnectionThread(socket, clientNum).start();
 
       clientNum++;
     }
