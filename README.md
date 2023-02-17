@@ -3,7 +3,7 @@
 The task is to implement a simple text TCP server in Java. It should be able to do the following:
 
 1. Accept connections from several clients
-2. Each connection should be given and id starting from 0
+2. Each connection should be given an id starting from 0
 3. Be able to process requests concurrently (no need to implement multiplexing per connecion though)
 4. Connection with a client must be open until client termintates it
 
