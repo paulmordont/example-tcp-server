@@ -5,12 +5,13 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ServerTest {
+public class SimpleServerTest {
 
   Server server;
 
@@ -42,8 +43,7 @@ public class ServerTest {
 
   @Test
   void testServerWithFourParallelClients() {
-    List<Client> clients = Stream.of(new Client("0.0.0.0", 12345),
-        new Client("0.0.0.0", 12345),
+    List<Client> clients = Stream.of(new Client("0.0.0.0", 12345), new Client("0.0.0.0", 12345),
         new Client("0.0.0.0", 12345), new Client("0.0.0.0", 12345)).collect(Collectors.toList());
 
     clients.forEach(c -> {
@@ -56,10 +56,10 @@ public class ServerTest {
 
     ConcurrentLinkedQueue<String> responses = new ConcurrentLinkedQueue<>();
 
-    List<CompletableFuture<Void>> completableFutures = clients.stream()
-        .map(c -> CompletableFuture.allOf(
-            CompletableFuture.runAsync(() -> responses.add(c.sendStringAndGetResponse("1"))),
-            CompletableFuture.runAsync(() -> responses.add(c.sendStringAndGetResponse("2")))))
+    List<CompletableFuture<Void>> completableFutures = clients.stream().map(
+            c -> CompletableFuture.allOf(
+                CompletableFuture.runAsync(() -> responses.add(c.sendStringAndGetResponse("1"))),
+                CompletableFuture.runAsync(() -> responses.add(c.sendStringAndGetResponse("2")))))
         .collect(Collectors.toList());
 
     CompletableFuture.allOf(completableFutures.toArray(new CompletableFuture[4])).join();
