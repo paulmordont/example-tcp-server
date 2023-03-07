@@ -22,6 +22,8 @@ public class ServerAcceptConnectionThread extends Thread {
       try {
         socket = serverSocket.accept();
       } catch (SocketException e) {
+        // this exception is thrown in case server socket is closed, meaning we could
+        // return gracefully here
         return;
       } catch (IOException e) {
         throw new RuntimeException(e);
@@ -29,6 +31,8 @@ public class ServerAcceptConnectionThread extends Thread {
 
       System.out.println(String.format("Client %s connected", clientNum));
 
+      // in order to be able to work with multiple connections concurrently,
+      // new thread is created responsible for reading/writing data
       new ServerClientConnectionThread(socket, clientNum).start();
 
       clientNum++;

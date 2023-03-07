@@ -26,12 +26,13 @@ public class ServerClientConnectionThread extends Thread {
       do {
         text = reader.readLine();
         if (text == null) {
+          // text == null when client closes the connection, hence the break
           break;
         }
         String reverseText = new StringBuilder(text).reverse().toString();
         writer.println(String.format("Client %s: %s", clientNum, reverseText));
-
       } while (true);
+
       socket.close();
       System.out.println(String.format("Client %s disconnected", clientNum));
     } catch (IOException ex) {
